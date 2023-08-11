@@ -1,27 +1,28 @@
 const mongoose = require('mongoose')
+const { Schema } = mongoose       //importing schema from mongoose
 
 // making a new schema, schema means the structure of database
 const userSchema = new Schema({
     name: {
-        type: string,
+        type: String,
         required: true
     },
 
     email: {
-        type: string,
+        type: String,
         required: true
     },
 
     password: {
-        type: string, 
-        required: true 
-    }, 
+        type: String,
+        required: true
+    },
 
     timeStamp: {
-        type: Date, 
+        type: Date,
         default: Date.now
     }
 })
 
 //exporting model
-module.exports = mongoose.model('user', userSchema)
+module.exports = mongoose.model('user', userSchema) 
