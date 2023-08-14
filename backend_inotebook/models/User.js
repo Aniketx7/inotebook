@@ -27,5 +27,5 @@ const userSchema = new Schema({
 
 //exporting model
 const User = mongoose.model('user', userSchema)
-User.createIndexes();           //use the createIndex() command in the shell to create a single index.,   Yaha pe ye karne se duplicate user nahi ban raha hai 
+//User.createIndexes();           //use the createIndex() command in the shell to create a single index.,   Yaha pe ye karne se duplicate user nahi ban raha hai 
 module.exports = User
