@@ -11,7 +11,8 @@ const userSchema = new Schema({
     email: {
         type: String,
         required: true,
-        unique: true            //You have to make one entities unique and also createIndexes() to prevent to duplicating user
+        // unique: true            //You have to make one entities unique and also createIndexes() to prevent to duplicating user
+        // another alternative of index, use findOne fucntion, jisse you can find is there more entries with same value or notify( boolean) 
     },
 
     password: {
