@@ -3,6 +3,7 @@ const User = require('../models/User');         //import User.js from models
 const { body, validationResult } = require('express-validator');
 var bcrypt = require('bcryptjs');          //bcryps js used to hash passwrod 
 var jwt = require('jsonwebtoken');          //jsw fascilate a secure connection between user and backend
+const fetchuser = require("../middleware/fetchuser")
 
 const JWT_SIGN = '@anikEt2389$$Kr'
 
@@ -73,53 +74,67 @@ router.post('/createUser', [
 
 ///////////////////////////////////////
 
-// login a user using: POST "api/auth/login" Doesn't require authentication
 
+// ROUTE 2: Authenticate a User using: POST "/api/auth/login". No login required
 router.post('/login', [
-    // using express validator                   (maine body ko express-validator pkg se import kiya hai )
-    body("email").isEmail(),                     //says, email ek valid email hona chahiye 
-    body("password").exists()
-
+    body('email', 'Enter a valid email').isEmail(),
+    body('password', 'Password cannot be blank').exists(),
 ], async (req, res) => {
-
-
-    const errors = validationResult(req)                //getting request body object
-    if (!errors.isEmpty()) {                            //if errors var (request body obj) become invalid, ...
+    let success = false;
+    // If there are errors, return Bad request and the errors
+    const errors = validationResult(req);                           //validationResult function , validator-express package se aaya hai 
+    if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password } = req.body
+    //By using destructuring 
+    const { email, password } = req.body;
     try {
-        let findUser = await User.findOne({ email });          //Find if there is an another unique email in database
-        if (!findUser) {                                                       //If it return true, send bad request and json error 
-            return res.status(400).json({ error: 'Login with valid credentials', })
+        let user = await User.findOne({ email });
+        if (!user) {
+            success = false
+            return res.status(400).json({ error: "Please try to login with correct credentials" });
         }
 
-        // comparing password of user and of database password using bcrypt js 
-        const comparePassword = await bcrypt.compare(password, user.password)
-        if (!comparePassword) {
-            return res.status(400).json({ error: 'Incorrect Password', })
-
+        const passwordCompare = await bcrypt.compare(password, user.password);
+        if (!passwordCompare) {
+            success = false
+            return res.status(400).json({ success, error: "Please try to login with correct credentials" });
         }
 
         const data = {
-            userId: {
+            user: {
                 id: user.id
             }
         }
+        const authtoken = jwt.sign(data, JWT_SIGN);
+        res.json({ success, authtoken })
 
-        var authtoken = jwt.sign(data, JWT_SIGN);       //jwt sign 
-
-        res.json({ authtoken })
-
-
-    }
-    catch (error) {
-        console.log(error.message)
-
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send("Internal Server Error");
     }
 
 
+});
+
+
+
+
+
+
+//Router 3:  get a user details using: POST "api/auth/getuser"  require authentication 
+router.post('/getuser', fetchuser, async (req, res) => {
+    try {
+        userId = req.user.id
+        const userData = await User.findById(userId).select("-password")        // select ka kam hoga ki sare obj ko select karna except password
+        res.send(userData)
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({ error: 'Internal server error' })
+
+    }
 })
 
 
