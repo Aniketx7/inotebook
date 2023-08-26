@@ -8,9 +8,13 @@ const fetchuser = (req, res, next) => {
         res.status(401).send({ error: "Please authenticate using a valid token" })
     }
     try {
-        const data = jwt.verify(token, JWT_SIGN);
+        //JWT verify method is used to verify the token, take two arguments one is toekn string value, and second one is secret key for matching the toekn is valid or not.
+
+        const data = jwt.verify(token, JWT_SIGN);           //It gives { user: { id: '64e4d8cfaf866deb74aa520a' }, iat: 1692719320 }
+        console.log("userID obj", data)
         req.user = data.user;
         next();
+
     } catch (error) {
         console.log(error)
         res.status(401).send({ error: "Please authenticate using a valid token" })
@@ -21,5 +25,4 @@ const fetchuser = (req, res, next) => {
 
 module.exports = fetchuser;
 
-        //JWT verify method is used to verify the token, take two arguments one is toekn string value, and second one is secret key for matching the toekn is valid or not.
         //The validation method returns a decode object that we stored the token in.
