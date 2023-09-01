@@ -3,15 +3,15 @@ import NoteContext from "./NoteContext";
 
 const NoteState = (props) => {
     const istate = {
-        "Name": "Aniket",
+        "Name": "Yash",
         "Age": "14  "
     }
     const [State, setState] = useState(istate)
     const update = () => {
         // setTimeout(() => {
             setState({
-                "Name": "Yash",
-                "Age": "Hii  "
+                "Name": "Aniket",
+                "Age": "16"
             })
 
     //     }, 1000);

@@ -12,19 +12,17 @@ import Home from "./components/Home";
 import NoteState from "./context/NoteState";
 
 function App() {
-  return (<>
+  return (
     <>
       <NoteState>
+        
         <Router>
           {/* Navbar */}
           <Navbar />
-
-
-          <div className="Router">
+          <div className="container">
             <Routes>
 
-              <Route exact path="/home" element={[<Home />]} />
-              <Route exact path="/" element={[<Navbar />]} />
+              <Route exact path="/" element={[<Home/>]} />
               <Route exact path="/about" element={[<About />]} />
 
             </Routes>
@@ -33,7 +31,7 @@ function App() {
       </NoteState>
 
     </>
-  </>
+  
   );
 }
 
