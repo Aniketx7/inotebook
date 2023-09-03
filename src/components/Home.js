@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
+// import NotesItem from './NotesItem'
+import Notes from './Notes'
 
 function Home() {
+
   return (
     <>
       <div className="container">
@@ -13,6 +16,7 @@ function Home() {
           <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
+        <Notes />
       </div>
     </>
   )
