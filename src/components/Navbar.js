@@ -6,7 +6,7 @@ function Navbar() {
   let location = useLocation();         //This is react-router-dom propeties
 
   React.useEffect(() => {
-   console.log(location.pathname)
+  console.log(location.pathname)
   }, [location]);
 
   
