@@ -14,7 +14,7 @@ const router = express.Router()
 router.get('/fetchnotes', fetchuser, async (req, res) => {
     try {
         const note = await Notes.find({ user: req.user.id })
-        console.log("user ID: ", req.user.id)           //auth-token me jo id dale hue hai usse nikal ke id dega
+        console.log("user ID: ", req.user.id)           //auth-token me jo id dale hue hai usse nikal ke id dega ( jo ki fetchuser middleware se aaya hai  )
         res.json(note)          //It give json of all saved notes by using valid auth-token of user 
     } catch (error) {
         console.error(error);
@@ -43,7 +43,7 @@ router.post('/addnotes', fetchuser, [
 
         // jo Notes schema hai, usse Naya note banaya jayega jisme data request post kiye gaye hai uska hoga 
         const note = new Notes({
-            title, description, tag, user: req.user.id
+            title, description, tag, user: req.user.id      //Ye jo req.user.id hai wo middleware fetchuser.js se aaya hai 
         })
         const savedNotes = await note.save()
         res.json(savedNotes)

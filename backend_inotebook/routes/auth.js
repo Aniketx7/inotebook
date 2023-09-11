@@ -127,7 +127,7 @@ router.post('/login', [
 //Router 3:  get a user details using: POST "api/auth/getuser"  require authentication 
 router.post('/getuser', fetchuser, async (req, res) => {
     try {
-        userId = req.user.id
+        userId = req.user.id        //Ye jo req.user hai na, ham middleware se karwaye hai (see that)
         const userData = await User.findById(userId).select("-password")        // select ka kam hoga ki sare obj ko select karna except password
         res.send(userData)
 

@@ -1,35 +1,40 @@
-import React, { useContext, useState } from 'react'
-import noteContext from '../context/NoteContext'
+import React, {useContext, useState} from 'react'
+import noteContext from "../context/NoteContext"
 
-function AddNote() {
-  const context = useContext(noteContext)
-  const { addNote } = context
+const AddNote = () => {
+    const context = useContext(noteContext);
+    const {addNote} = context;
 
-  const [titleDescp, setTitleDescp] = useState({ title: "ff", description: "dd" })
-  const onChange = (e) => {
-    setTitleDescp({ ...titleDescp, [e.target.name]: [e.target.value] })   //target element ka name use value ke barabar
-  }
-  const handleClick = (e) => {
-    e.preventDefault()
-    addNote(titleDescp.Title, titleDescp.Description)     //Ye jo  "Title" wo title field ka name hai jo ham setIteleDescp me kiye hue hai e.target.name isi liye
-    // addNote(titleDescp)
-  }
+    const [note, setNote] = useState({title: "", description: "", tag: "default"})
 
+    const handleClick = (e)=>{
+        e.preventDefault();
+        addNote(note.Title, note.Description, note.tag);
+    }
 
-  return (
-
-    <>
-      <div className="mb-3">
-        <label htmlFor="exampleFormControlInput1" className="form-label">Title</label>
-        <input type="text" className="form-control" id="title" name="Title" placeholder="Your Title" onChange={onChange} />
-      </div>
-      <div className="mb-3">
-        <label htmlFor="exampleFormControlTextarea1" className="form-label">Description</label>
-        <textarea className="form-control" id="description" name='Description' rows="3" onChange={onChange}></textarea>
-      </div>
-      <button type="submit" class="btn btn-primary" onClick={handleClick}>Submit</button>
-    </>
-  )
+    const onChange = (e)=>{
+        setNote({...note, [e.target.name]: e.target.value})
+    }
+    return (
+        <div className="container my-3">
+            <h2>Add a Note</h2>
+            <form className="my-3">
+                <div className="mb-3">
+                    <label htmlFor="title" className="form-label">Title</label>
+                    <input type="text" className="form-control" id="title" name="Title" aria-describedby="emailHelp" onChange={onChange} /> 
+                </div>
+                <div className="mb-3">
+                    <label htmlFor="description" className="form-label">Description</label>
+                    <input type="text" className="form-control" id="description" name="Description" onChange={onChange} />
+                </div>
+                <div className="mb-3 form-check">
+                    <input type="checkbox" className="form-check-input" id="exampleCheck1" />
+                    <label className="form-check-label" htmlFor="exampleCheck1">Check me out</label>
+                </div>
+                <button type="submit" className="btn btn-primary" onClick={handleClick}>Add Note</button>
+            </form>
+        </div>
+    )
 }
 
 export default AddNote
