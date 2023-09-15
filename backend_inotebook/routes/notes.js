@@ -29,7 +29,8 @@ router.get('/fetchnotes', fetchuser, async (req, res) => {
 // Route 2: Adding a new note using post: 'api/notes/addnotes' Login required 
 router.post('/addnotes', fetchuser, [
     body("title").isLength({ min: 3 }),           //says, title key ka length min 3 hona chahiye
-    body("description").isLength({ min: 6 })
+    body("description").isLength({ min: 6 }),
+    body('tag')
 ], async (req, res) => {
     try {
         const { title, description, tag } = req.body
@@ -99,6 +100,21 @@ router.put('/updatenotes/:id', fetchuser, async (req, res) => {
     res.json({note})
     
 
+})
+
+
+router.delete('/deletenote/:id', fetchuser, async (req, res) => { 
+    let note = await Notes.findById(req.params.id);                     //To Ye tumhe, jo id API URL me diye ho us id ka jo DB me us id se obj bane honge wo Pura obj dega
+    if (!note) {                                    //If there is no data found with given id, send this 
+        return  res.status(404).send("NOT FOUND")
+    }
+
+    if (note.user.toString() !== req.user.id) { 
+        return res.status(401).send('Not a valid credentials')
+    }
+
+    note = await Notes.findByIdAndDelete(req.params.id)
+    res.json({'Success': 'Notes deleted', 'Note': note})
 })
 
 module.exports = router
