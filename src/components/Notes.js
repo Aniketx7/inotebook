@@ -64,11 +64,11 @@ function Notes() {
                             <form className="my-3">
                                 <div className="mb-3">
                                     <label htmlFor="Etitle" className="form-label">Title</label>
-                                    <input type="text" className="form-control" id="Etitle" name="Etitle" value={note.Etitle} onChange={onChange} />
+                                    <input type="text" className="form-control" id="Etitle" name="Etitle" value={note.Etitle} onChange={onChange} minLength={1} required/>
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="Edescription" className="form-label">Description</label>
-                                    <input type="text" className="form-control" id="Edescription" name="Edescription" value={note.Edescription} onChange={onChange} />
+                                    <input type="text" className="form-control" id="Edescription" name="Edescription" value={note.Edescription} onChange={onChange} minLength={1} required/>
                                 </div>
                                 <div className="mb-3">
                                     <label htmlFor="Etag" className="form-label">Tag</label>
@@ -80,7 +80,7 @@ function Notes() {
                         </div>
                         <div className="modal-footer">
                             <button type="button" ref={refClose} className="btn btn-secondary" data-bs-dismiss="modal">cancel</button>
-                            <button type="button" className="btn btn-primary" onClick={handleClick}>Update</button>
+                            <button  type="button" className="btn btn-primary" disabled={note.Etitle.length < 1 || note.Edescription.length < 1 } onClick={handleClick}>Update</button>
                         </div>
                     </div>
                 </div>
@@ -90,6 +90,7 @@ function Notes() {
             <div className="mb-3">
                 <p>Note</p>
                 <div className="container noteContainer" style={{ display: "flex", flexWrap: "wrap" }}>
+                    {Note.length === 0 && 'Nothing to show'}
                     {Note.map((note) => {        //map kya karega Note me jitne bhi cheeze hai use lega 
                         return <NotesItem key={note._id} note={note} updatenote={updateNote} />  //note ke value ko note kar diye 
                     })}
